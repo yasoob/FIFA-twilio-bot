@@ -36,16 +36,16 @@ def receive_sms():
         output = "\n--- Past Matches ---\n"
         for match in html:
             if match['status'] == 'completed':
-                output += match['home_team']['country'] + " " + 
-                          str(match['home_team']['goals']) + " vs " + 
-                          match['away_team']['country']+ " " + 
+                output += match['home_team']['country'] + " " + \
+                          str(match['home_team']['goals']) + " vs " + \
+                          match['away_team']['country']+ " " + \
                           str(match['away_team']['goals']) + "\n"
         
         output += "\n\n--- Future Matches ---\n"
         for match in html:
             if match['status'] == 'future':
-                output += match['home_team']['country'] + " vs " + 
-                          match['away_team']['country'] + " at " + 
+                output += match['home_team']['country'] + " vs " + \
+                          match['away_team']['country'] + " at " + \
                           parser.parse(match['datetime']).astimezone(to_zone).strftime('%I:%M %p on %d %b') +"\n"
     
     elif body == 'complete':
