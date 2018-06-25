@@ -20,7 +20,7 @@ urls = {'group': 'https://worldcup.sfg.io/teams/group_results',
 
 @app.route('/', methods=['POST'])
 def receive_sms():
-    body = request.values.get('Body', '').lower()
+    body = request.values.get('Body', '').lower().strip()
     resp = MessagingResponse()
 
     if body == 'today':
