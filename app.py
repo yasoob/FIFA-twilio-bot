@@ -12,6 +12,12 @@ countries = ['KOR', 'PAN', 'MEX', 'ENG', 'COL', 'JPN', 'POL', 'SEN',
             'DEN', 'AUS', 'FRA', 'PER', 'ARG', 'CRO', 'BRA', 'CRC', 
             'NGA', 'ISL', 'SRB', 'SUI', 'BEL', 'TUN', 'GER', 'SWE']
 
+urls = {'group': 'https://worldcup.sfg.io/teams/group_results',
+        'country': 'https://worldcup.sfg.io/matches/country?fifa_code=',
+        'today': 'https://worldcup.sfg.io/matches/today',
+        'tomorrow': 'https://worldcup.sfg.io/matches/tomorrow'
+}
+
 @app.route('/', methods=['POST'])
 def receive_sms():
     body = request.values.get('Body', '').lower()
