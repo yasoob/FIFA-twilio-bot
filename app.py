@@ -18,28 +18,28 @@ def receive_sms():
     resp = MessagingResponse()
 
     if body == 'today':
-    	html = requests.get(urls['today']).json()
-		output = "\n"
+        html = requests.get(urls['today']).json()
+        output = "\n"
         for match in html:
             output += match['home_team_country'] + ' vs ' + match['away_team_country'] + \
             " at "+ parser.parse(match['datetime']).astimezone(to_zone).strftime('%I:%M %p') +"\n"
 
     elif body == 'tomorrow':
-    	html = requests.get(urls['tomorrow']).json()
-    	output = "\n"
+        html = requests.get(urls['tomorrow']).json()
+        output = "\n"
         for match in html:
             output += match['home_team_country'] + ' vs ' + match['away_team_country'] + \
             " at "+ parser.parse(match['datetime']).astimezone(to_zone).strftime('%I:%M %p') +"\n"
     
     elif body.upper() in countries:
-    	html = requests.get(urls['country']+body).json()
-    	output = "\n--- Past Matches ---\n"
+        html = requests.get(urls['country']+body).json()
+        output = "\n--- Past Matches ---\n"
         for match in html:
             if match['status'] == 'completed':
                 output += match['home_team']['country'] + " " + 
-                		  str(match['home_team']['goals']) + " vs " + 
-                		  match['away_team']['country']+ " " + 
-                		  str(match['away_team']['goals']) + "\n"
+                          str(match['home_team']['goals']) + " vs " + 
+                          match['away_team']['country']+ " " + 
+                          str(match['away_team']['goals']) + "\n"
         
         output += "\n\n--- Future Matches ---\n"
         for match in html:
@@ -47,26 +47,26 @@ def receive_sms():
                 output += match['home_team']['country'] + " vs " + 
                           match['away_team']['country'] + " at " + 
                           parser.parse(match['datetime']).astimezone(to_zone).strftime('%I:%M %p on %d %b') +"\n"
-	
-	elif body == 'complete':
-		html = requests.get(urls['group']).json()
-		output = ""
-    	for group in html:
-    		output += "\n\n--- Group " + group['group']['letter']  + " ---\n"
-    		for team in group['group']['teams']:
-    			output += team['team']['country'] + " Pts: " + str(team['team']['points']) + "\n"
+    
+    elif body == 'complete':
+        html = requests.get(urls['group']).json()
+        output = ""
+        for group in html:
+            output += "\n\n--- Group " + group['group']['letter']  + " ---\n"
+            for team in group['group']['teams']:
+                output += team['team']['country'] + " Pts: " + str(team['team']['points']) + "\n"
 
     elif body == 'list':
-    	output = '\n'.join(countries)
+        output = '\n'.join(countries)
     else:
-    	output = ('Sorry we could not understand your response. '
+        output = ('Sorry we could not understand your response. '
             'You can respond with "today" to get today\'s details, "tomorrow" ' 
             'to get tomorrow\'s details, "complete" to get the group stage standing of teams or '
             'you can reply with a country FIFA code (like BRA, ARG) and we will send you the '
             'standing of that particular country. For a list of FIFA codes send "list".\n\nHave a great day!')
 
-	resp.message(output)
-	return str(resp)
+    resp.message(output)
+    return str(resp)
 
 
 if __name__ == "__main__":
