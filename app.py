@@ -26,16 +26,22 @@ def receive_sms():
     if body == 'today':
         html = requests.get(urls['today']).json()
         output = "\n"
-        for match in html:
-            output += match['home_team_country'] + ' vs ' + match['away_team_country'] + \
-            " at "+ parser.parse(match['datetime']).astimezone(to_zone).strftime('%I:%M %p') +"\n"
+        if (html == {}) or (html == None):
+            output += "No matches today"
+        else:
+            for match in html:
+                output += match['home_team_country'] + ' vs ' + match['away_team_country'] + \
+                " at "+ parser.parse(match['datetime']).astimezone(to_zone).strftime('%I:%M %p') +"\n"
 
     elif body == 'tomorrow':
         html = requests.get(urls['tomorrow']).json()
         output = "\n"
-        for match in html:
-            output += match['home_team_country'] + ' vs ' + match['away_team_country'] + \
-            " at "+ parser.parse(match['datetime']).astimezone(to_zone).strftime('%I:%M %p') +"\n"
+        if (html == {}) or (html == None):
+            output += "No matches tomorrow"
+        else:
+            for match in html:
+                output += match['home_team_country'] + ' vs ' + match['away_team_country'] + \
+                " at "+ parser.parse(match['datetime']).astimezone(to_zone).strftime('%I:%M %p') +"\n"
     
     elif body.upper() in countries:
         html = requests.get(urls['country']+body).json()
