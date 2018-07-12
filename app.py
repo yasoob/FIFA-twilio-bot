@@ -26,7 +26,7 @@ def receive_sms():
     if body == 'today':
         html = requests.get(urls['today']).json()
         output = "\n"
-        if (html == {}) or (html == None):
+        if html == []:
             output += "No matches today"
         else:
             for match in html:
@@ -36,7 +36,7 @@ def receive_sms():
     elif body == 'tomorrow':
         html = requests.get(urls['tomorrow']).json()
         output = "\n"
-        if (html == {}) or (html == None):
+        if html == []:
             output += "No matches tomorrow"
         else:
             for match in html:
@@ -53,9 +53,10 @@ def receive_sms():
                           match['away_team']['country']+ " " + \
                           str(match['away_team']['goals']) + "\n"
         
-        output += "\n\n--- Future Matches ---\n"
         for match in html:
             if match['status'] == 'future':
+                if 'Future' not in output:
+                    output += "\n\n--- Future Matches ---\n"
                 output += match['home_team']['country'] + " vs " + \
                           match['away_team']['country'] + " at " + \
                           parser.parse(match['datetime']).astimezone(to_zone).strftime('%I:%M %p on %d %b') +"\n"
@@ -64,9 +65,9 @@ def receive_sms():
         html = requests.get(urls['group']).json()
         output = ""
         for group in html:
-            output += "\n\n--- Group " + group['group']['letter']  + " ---\n"
-            for team in group['group']['teams']:
-                output += team['team']['country'] + " Pts: " + str(team['team']['points']) + "\n"
+            output += "\n\n--- Group " + group['letter']  + " ---\n"
+            for team in group['ordered_teams']:
+                output += team['country'] + " Pts: " + str(team['points']) + "\n"
 
     elif body == 'list':
         output = '\n'.join(countries)
